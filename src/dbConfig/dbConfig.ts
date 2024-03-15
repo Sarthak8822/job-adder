@@ -1,8 +1,10 @@
+"use server"
+
 import mongoose from 'mongoose';
 
 export async function connect() {
     try {
-        console.log("first", process.env.MONGO_URI)
+        console.log("DB Connection:", process.env.MONGO_URI)
         await mongoose.connect(process.env.MONGO_URI!);
         const connection = mongoose.connection;
 

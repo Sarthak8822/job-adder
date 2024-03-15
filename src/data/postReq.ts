@@ -1,9 +1,14 @@
 // data/postReq.tsx
 "use server"
 
+import { connect } from "@/dbConfig/dbConfig";
+
+connect();
+
 export const postReq = async (jobDetails: any) => {
     try {
-        const response = await fetch('/api/addJob', {
+        console.log("Data request:", jobDetails)
+        const response = await fetch('http://localhost:3000/api/addJob', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -12,9 +17,7 @@ export const postReq = async (jobDetails: any) => {
         });
         console.log("Response:", response)
 
-        if (!response.ok) {
-            throw new Error('Failed to add job');
-        }
+        return response
     } catch (error) {
         console.error('Error adding job:', error);
         throw error;
