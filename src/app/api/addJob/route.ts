@@ -4,13 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connect } from '@/dbConfig/dbConfig';
 import Job from '@/models/jobModel';
 
-connect();
 
 export async function POST(req: NextRequest, res: NextResponse) {
     try {
-        console.log("API Request: ", req.body);
-        const reqBody = req.json()
-         // Connect to MongoDB
+        await connect();
+        const reqBody = await req.json()
 
         const { employer_name, employer_logo, job_title, job_description, job_country, job_apply_link } = reqBody;
 
@@ -28,6 +26,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         return NextResponse.json({
             message: "Job created successfully",
             success: true,
+            status: 200,
             savedJob,
         })
     } catch (error: any) {

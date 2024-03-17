@@ -24,6 +24,7 @@ export default function JobAdder() {
     job_country: "",
     job_apply_link: "",
   });
+  const [success, setSuccess] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -33,11 +34,12 @@ export default function JobAdder() {
   const handleAddJob = async () => {
     try {
       console.log("jobDetails: ", jobDetails);
-      await postReq(jobDetails);
-
+      const status = await postReq(jobDetails);
+      if (status === 200) {
+        setSuccess(true);
+      }
     } catch (error) {
       console.error("Error adding job:", error);
-      // Handle error and display an error message to the user if needed
     }
   };
   return (
@@ -89,6 +91,16 @@ export default function JobAdder() {
             type="jobapplylink"
           />
         </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="jobcountry">Job Country</Label>
+          <Input
+            id="job_country"
+            value={jobDetails.job_country}
+            placeholder="Job Country"
+            onChange={handleInputChange}
+            type="jobcountry"
+          />
+        </LabelInputContainer>
         <LabelInputContainer className="mb-8">
           <Label htmlFor="employerLogo">Employer Logo URL</Label>
           <Input
@@ -109,6 +121,10 @@ export default function JobAdder() {
           <BottomGradient />
         </button>
       </form>
+
+      {success && (
+        <p className="text-green-500">Job Added Successfully &rcorr; </p>
+      )}
     </div>
   );
 }
